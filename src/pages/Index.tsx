@@ -6,6 +6,7 @@ import StickyScrollSection from "@/components/StickyScrollSection";
 import TechMarquee from "@/components/TechMarquee";
 import FaqSection from "@/components/FaqSection";
 import FooterCta from "@/components/FooterCta";
+import AchievementsSection from "@/components/AchievementsSection";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
         <ProjectsGrid />
         <StickyScrollSection />
         <TechMarquee />
+        <AchievementsSection />
         <FaqSection />
         <FooterCta />
       </main>

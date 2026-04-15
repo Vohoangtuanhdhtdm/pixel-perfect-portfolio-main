@@ -1,59 +1,52 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import {
-  Search,
-  Code2,
-  Rocket,
-  ShieldCheck,
-  Lightbulb,
-  Workflow,
-} from "lucide-react";
+import { Database, Brain, KanbanSquare, Code2, BookOpen } from "lucide-react";
 import { useRef } from "react";
 
-// --- NỘI DUNG SÁNG TẠO MỚI ---
+// --- CONTENT UPDATED TO "ENGINEERING & RESEARCH MINDSET" ---
 const stages = [
   {
     number: "01",
-    icon: Lightbulb,
-    title: "Discovery & Blueprint",
+    icon: Database,
+    title: "System Architecture & Design",
     description:
-      "Chúng ta không bắt đầu bằng code, mà bằng sự thấu hiểu. Tôi phân tích sâu yêu cầu nghiệp vụ, xác định 'pain-points' và phác thảo lộ trình kỹ thuật rõ ràng để đảm bảo ROI cao nhất cho dự án.",
-    tags: ["Market Analysis", "User Persona", "Tech Stack Selection"],
+      "Every sustainable project starts with a solid blueprint (Low-level design). I focus on designing normalized Entity-Relationship Diagrams (ERD) and applying Clean Architecture to ensure systems remain easily maintainable and scalable.",
+    tags: ["Clean Architecture", "Database ERD", "System Design"],
   },
   {
     number: "02",
-    icon: Workflow,
-    title: "System Architecture",
+    icon: Brain,
+    title: "Data Science & ML Pipeline",
     description:
-      "Xây dựng nền móng vững chắc. Thiết kế sơ đồ luồng dữ liệu, kiến trúc Database và API contracts. Đảm bảo hệ thống có khả năng mở rộng (Scalability) và bảo trì dễ dàng trong tương lai.",
-    tags: ["Database Schema", "System Design", "API Spec"],
+      "Processing and analyzing Big Data using PySpark. Training Machine Learning/Deep Learning models and applying Explainable AI (XAI) to ensure models are not only accurate but also transparent and highly interpretable.",
+    tags: ["PySpark", "Machine Learning", "CNN / VGG"],
   },
   {
     number: "03",
-    icon: Code2,
-    title: "Agile Development",
+    icon: KanbanSquare,
+    title: "Agile & PMI Methodology",
     description:
-      "Viết code sạch (Clean Code), tối ưu và tuân thủ các nguyên tắc SOLID. Chia nhỏ dự án thành các Sprint, cập nhật tiến độ liên tục giúp bạn nắm bắt sản phẩm từng ngày.",
-    tags: ["Clean Code", "React/Next.js", ".NET Core"],
+      "Operating projects based on international standard management mindsets. Applying Agile/Scrum frameworks, breaking down phases into Sprints, mitigating risks, and strictly managing progress to ensure seamless module integration.",
+    tags: ["PMI Ready", "Agile Workflow", "Risk Management"],
   },
   {
     number: "04",
-    icon: ShieldCheck,
-    title: "Rigorous QA & Testing",
+    icon: Code2,
+    title: "Fullstack Implementation",
     description:
-      "Sản phẩm chỉ xuất xưởng khi đạt chuẩn 'Zero Critical Bugs'. Thực hiện Unit Test, Integration Test và kiểm tra hiệu năng để đảm bảo trải nghiệm mượt mà nhất.",
-    tags: ["Unit Testing", "Performance", "Security Audit"],
+      "Integrating complex AI/ML models into real-world platforms. Building robust Backends with ASP.NET API and highly optimized Frontends using React/Next.js or Flutter mobile applications.",
+    tags: ["ASP.NET API", "React/TypeScript", "Flutter"],
   },
   {
     number: "05",
-    icon: Rocket,
-    title: "Deployment & Scaling",
+    icon: BookOpen,
+    title: "Research & Publication",
     description:
-      "Triển khai tự động hóa với CI/CD Pipelines. Thiết lập Monitoring để theo dõi sức khỏe hệ thống 24/7 và sẵn sàng các phương án mở rộng khi lượng người dùng tăng đột biến.",
-    tags: ["CI/CD", "Docker", "Cloud Ops"],
+      "Going beyond product launches, I continuously assess performance (Evaluation Metrics) and synthesize research findings into scientific papers for publication at national-level specialized conferences.",
+    tags: ["Scientific Research", "MLOps", "Evaluation"],
   },
 ];
 
-// --- COMPONENT GIAO DIỆN TIMELINE ---
+// --- TIMELINE UI COMPONENT ---
 function ProcessItem({
   stage,
   index,
@@ -64,15 +57,13 @@ function ProcessItem({
   isLast: boolean;
 }) {
   const ref = useRef(null);
-  // Kích hoạt animation khi thẻ xuất hiện ở giữa màn hình
   const isInView = useInView(ref, { margin: "-20% 0px -40% 0px", once: false });
 
   return (
     <div ref={ref} className="relative pl-12 md:pl-16 py-4 group">
-      {/* --- TIMELINE LINE (Đường kẻ dọc) --- */}
+      {/* --- TIMELINE LINE --- */}
       {!isLast && (
         <div className="absolute left-[19px] md:left-[27px] top-12 bottom-[-40px] w-0.5 bg-border">
-          {/* Thanh tiến trình chạy dọc theo đường kẻ khi active */}
           <motion.div
             animate={{ height: isInView ? "100%" : "0%" }}
             transition={{ duration: 1, ease: "easeInOut" }}
@@ -81,7 +72,7 @@ function ProcessItem({
         </div>
       )}
 
-      {/* --- NODE ICON (Điểm tròn bên trái) --- */}
+      {/* --- NODE ICON --- */}
       <div
         className={`absolute left-0 top-1 w-10 h-10 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center z-10 transition-all duration-500 bg-background ${
           isInView
@@ -105,7 +96,6 @@ function ProcessItem({
             : "border-border hover:border-primary/20"
         }`}
       >
-        {/* Background Number Decoration */}
         <span className="absolute right-4 top-2 text-6xl md:text-8xl font-black text-muted/20 select-none -z-10 font-display">
           {stage.number}
         </span>
@@ -120,7 +110,6 @@ function ProcessItem({
           {stage.description}
         </p>
 
-        {/* Tags nhỏ bên dưới */}
         <div className="flex flex-wrap gap-2">
           {stage.tags.map((tag: string) => (
             <span
@@ -142,7 +131,6 @@ const StickyScrollProcess = () => {
       id="process"
       className="relative bg-background py-24 overflow-hidden"
     >
-      {/* Background Decor */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
@@ -156,28 +144,28 @@ const StickyScrollProcess = () => {
             >
               <span className="flex items-center gap-2 text-primary text-sm font-bold tracking-widest uppercase mb-4">
                 <span className="w-8 h-px bg-primary"></span>
-                Workflow
+                Methodology
               </span>
 
               <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                My Development <br />
+                Engineering <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
-                  Journey
+                  Approach
                 </span>
               </h2>
 
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Quy trình làm việc chuyên nghiệp được đúc kết qua nhiều dự án
-                thực tế. Tôi biến những ý tưởng phức tạp thành sản phẩm phần mềm
-                vận hành mượt mà.
+                A problem-solving mindset ranging from System Architecture and
+                Design to deploying machine learning models and publishing
+                scientific research.
               </p>
 
               <div className="mt-8 p-4 bg-secondary/30 rounded-lg border border-border/50 backdrop-blur-sm">
                 <p className="text-sm font-medium text-foreground italic">
-                  "Quality is not an act, it is a habit."
+                  "Architecture is about the important stuff. Whatever that is."
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  — Aristotle
+                  — Ralph Johnson
                 </p>
               </div>
             </motion.div>
