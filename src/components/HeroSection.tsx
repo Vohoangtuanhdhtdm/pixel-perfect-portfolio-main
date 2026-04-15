@@ -6,10 +6,10 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-background selection:bg-primary/20">
       {/* --- 1. BACKGROUND UPGRADE --- */}
-      {/* Lớp lưới (Grid Pattern) tạo cảm giác kỹ thuật */}
+      {/* Grid Pattern for a technical feel */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
-      {/* Đốm sáng nền (Giữ nguyên nhưng giảm opacity để grid rõ hơn) */}
+      {/* Background glow (Opacity reduced to make the grid more visible) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.6 }}
@@ -19,7 +19,7 @@ const HeroSection = () => {
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 w-full py-12 md:py-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* --- CỘT 1: TEXT CONTENT --- */}
+          {/* --- COLUMN 1: TEXT CONTENT --- */}
           <div className="max-w-2xl order-2 lg:order-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -31,7 +31,7 @@ const HeroSection = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
               </span>
-              {/* Thay đổi nhỏ: Dùng từ "Creator" thay vì Engineer nghe bay bổng hơn */}
+              {/* Minor tweak: Using "Creator" instead of Engineer sounds more imaginative */}
               <span className="text-sm font-medium text-foreground/80">
                 Hello! I'm Hoang Tuan
               </span>
@@ -57,7 +57,6 @@ const HeroSection = () => {
             >
               I believe technology should feel invisible. I turn complex
               problems into simple, elegant experiences that just work.
-              {/* (Dịch: Tôi tin công nghệ nên "vô hình". Tôi biến những vấn đề phức tạp thành trải nghiệm đơn giản, tinh tế.) */}
             </motion.p>
 
             <motion.div
@@ -77,34 +76,35 @@ const HeroSection = () => {
                 variant="outline"
                 className="h-12 px-8 text-base border-primary/20 hover:bg-primary/5"
               >
-                Let's Talk <Send className="ml-2 h-4 w-4" />
+                Contact Me
+                <Send className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
           </div>
 
-          {/* --- CỘT 2: HÌNH ẢNH & FLOATING ELEMENTS (Phần nâng cấp chính) --- */}
+          {/* --- COLUMN 2: IMAGE & FLOATING ELEMENTS (Main upgrade section) --- */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
             className="relative lg:h-full flex justify-center items-center order-1 lg:order-2"
           >
-            {/* Vòng tròn trang trí xoay nhẹ phía sau */}
+            {/* Decorative circle rotating slightly in the background */}
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               className="absolute w-[350px] h-[350px] border border-dashed border-primary/20 rounded-full"
             />
 
-            {/* Container chính chứa ảnh */}
+            {/* Main container for the image */}
             <div className="relative w-[280px] md:w-[320px] aspect-square">
-              {/* Lớp nền lệch (Offset Background) tạo độ dày */}
+              {/* Offset background layer to create depth */}
               <div className="absolute inset-0 bg-gradient-to-tr from-primary to-blue-600 rounded-[2rem] rotate-6 opacity-20 blur-sm transform scale-105" />
               <div className="absolute inset-0 bg-card rounded-[2rem] rotate-6 border border-border shadow-xl" />
 
-              {/* Ảnh chính */}
+              {/* Main Image */}
               <div className="absolute inset-0 bg-background rounded-[2rem] overflow-hidden border border-border shadow-2xl rotate-0 z-10 group">
-                {/* Sửa lại đường dẫn ảnh của bạn ở đây */}
+                {/* Replace with your image path here */}
                 <img
                   src="./avatarProfile.jpg"
                   alt="Hoang Tuan"
@@ -112,26 +112,26 @@ const HeroSection = () => {
                 />
               </div>
 
-              {/* --- FLOATING ICONS (Các icon bay bay) --- */}
-              {/* Icon 1: Code - Góc trên trái */}
+              {/* --- FLOATING ICONS --- */}
+              {/* Icon 1: Code - Top left corner */}
               <FloatingBadge
                 icon={<Code2 size={20} className="text-blue-500" />}
                 className="-top-6 -left-6 z-20 delay-0"
               />
 
-              {/* Icon 2: CPU - Góc trên phải */}
+              {/* Icon 2: CPU - Top right corner */}
               <FloatingBadge
                 icon={<Cpu size={20} className="text-purple-500" />}
                 className="top-8 -right-8 z-20 delay-700"
               />
 
-              {/* Icon 3: Zap - Góc dưới trái */}
+              {/* Icon 3: Zap - Bottom left corner */}
               <FloatingBadge
                 icon={<Zap size={20} className="text-yellow-500" />}
                 className="-bottom-4 -left-4 z-20 delay-1000"
               />
 
-              {/* Card trạng thái: Global - Góc dưới phải */}
+              {/* Status card: Global - Bottom right corner */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{
@@ -150,9 +150,9 @@ const HeroSection = () => {
                 </div>
                 <div>
                   <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
-                    I'm Software Engineer
+                    I'm a Software Engineer
                   </p>
-                  <p className="text-xs font-bold">Việt Nam</p>
+                  <p className="text-xs font-bold">Vietnam</p>
                 </div>
               </motion.div>
             </div>

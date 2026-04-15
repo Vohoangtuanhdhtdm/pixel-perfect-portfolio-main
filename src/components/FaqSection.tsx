@@ -7,25 +7,27 @@ import {
   Zap,
   Briefcase,
   CheckCircle2,
+  Brain,
 } from "lucide-react";
 import { MouseEvent } from "react";
 
-// --- DỮ LIỆU ĐƯỢC CHUYỂN ĐỔI THÀNH DẠNG "INSIGHT" ---
+// --- DATA TRANSFORMED INTO "INSIGHTS" ---
+// --- DATA TRANSFORMED INTO "CORE COMPETENCIES & VISION" ---
 const insights = [
   {
-    title: "Tech Arsenal",
+    title: "Tech Stack & Architecture",
     icon: Code2,
-    description: "My primary weapons of choice for building scalable systems.",
+    description:
+      "Leveraging modern technologies and optimized architectures to build scalable systems.",
     content: (
       <div className="flex flex-wrap gap-2 mt-4">
         {[
-          "React/Next.js",
-          "TypeScript",
-          ".NET Core",
+          "ASP.NET API / MVC",
+          "Clean Architecture",
+          "React / TypeScript",
+          "SQL Server",
+          "Flutter / Firebase",
           "Node.js",
-          "PostgreSQL",
-          "Flutter",
-          "AWS/Azure",
         ].map((tech) => (
           <span
             key={tech}
@@ -36,78 +38,91 @@ const insights = [
         ))}
       </div>
     ),
-    colSpan: "md:col-span-2", // Card này rộng gấp đôi
+    colSpan: "md:col-span-2", // Wide card
   },
   {
-    title: "Availability",
-    icon: Zap,
-    description: "Currently open for select projects starting Q2 2026.",
+    title: "Project Management",
+    icon: Briefcase,
+    description:
+      "Applying professional management mindsets to software development.",
     content: (
       <div className="mt-4 flex items-center gap-3">
-        <span className="relative flex h-3 w-3">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-        </span>
-        <span className="text-sm font-medium text-green-500">
-          Accepting New Clients
+        <div className="flex -space-x-2">
+          <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-xs font-bold text-blue-500">
+            Agile
+          </div>
+          <div className="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/50 flex items-center justify-center text-xs font-bold text-purple-500">
+            PMI
+          </div>
+        </div>
+        <span className="text-sm font-medium text-muted-foreground">
+          PMI Ready Certification
         </span>
       </div>
     ),
     colSpan: "md:col-span-1",
   },
   {
-    title: "Communication",
-    icon: MessageSquare,
-    description: "Async-first with regular syncs. Weekly reports & clear docs.",
+    title: "Research Focus: PropTech",
+    icon: Globe,
+    description:
+      "Applying core technologies to solve real estate valuation and recommendation problems (KGS Project).",
     content: (
       <div className="mt-4 text-sm text-muted-foreground">
-        <p>• Slack/Teams for daily comms</p>
-        <p>• Weekly Video Demos</p>
-        <p>• Jira/Trello for tracking</p>
+        <p>• Automated Valuation Models (AVM)</p>
+        <p>• Real Estate Recommendation Systems</p>
       </div>
     ),
     colSpan: "md:col-span-1",
   },
   {
-    title: "Engagement Model",
-    icon: Briefcase,
-    description: "Flexible options tailored to your project needs.",
+    title: "AI & Machine Learning",
+    icon: Brain,
+    description:
+      "Researching and deploying deep learning models into practical applications.",
     content: (
       <div className="mt-4 grid grid-cols-2 gap-2">
         <div className="p-3 bg-secondary/30 rounded-lg text-center border border-white/5">
           <div className="text-xs text-muted-foreground uppercase font-bold">
-            Fixed Price
+            Data & ML
           </div>
-          <div className="text-sm font-semibold mt-1">Project Based</div>
+          <div className="text-sm font-semibold mt-1 flex flex-col items-center gap-1">
+            <span className="text-xs font-mono">Python / Scikit</span>
+            <span className="text-xs font-mono">TensorFlow</span>
+          </div>
         </div>
         <div className="p-3 bg-secondary/30 rounded-lg text-center border border-white/5">
           <div className="text-xs text-muted-foreground uppercase font-bold">
-            Retainer
+            Infrastructure
           </div>
-          <div className="text-sm font-semibold mt-1">Monthly</div>
+          <div className="text-sm font-semibold mt-1 flex flex-col items-center gap-1">
+            <span className="text-xs font-mono">AWS Cloud</span>
+            <span className="text-xs font-mono">MLOps</span>
+          </div>
         </div>
       </div>
     ),
     colSpan: "md:col-span-2",
   },
   {
-    title: "Client Fit",
-    icon: Globe,
-    description: "From early-stage Startups to Fortune 500 Enterprises.",
+    title: "Academic & Professional Goals",
+    icon: Zap,
+    description:
+      "Long-term vision to grow from an excellent software engineer to a systems architect.",
     content: (
-      <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
         <CheckCircle2 className="w-4 h-4 text-primary" />
-        <span>MVPs & Prototyping</span>
+        <span>International Research Publications</span>
         <span className="w-1 h-1 rounded-full bg-border mx-1" />
         <CheckCircle2 className="w-4 h-4 text-primary" />
-        <span>Distributed Systems</span>
+        <span>Distributed Systems Optimization</span>
       </div>
     ),
-    colSpan: "md:col-span-3", // Card này rộng full hàng
+    colSpan: "md:col-span-3", // Full-width card
   },
 ];
 
-// --- COMPONENT CARD VỚI HIỆU ỨNG SPOTLIGHT ---
+// --- CARD COMPONENT WITH SPOTLIGHT EFFECT ---
 function InsightCard({ item }: { item: (typeof insights)[number] }) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -126,7 +141,7 @@ function InsightCard({ item }: { item: (typeof insights)[number] }) {
       className={`group relative border border-border bg-card px-6 py-6 rounded-2xl overflow-hidden ${item.colSpan}`}
       onMouseMove={handleMouseMove}
     >
-      {/* Hiệu ứng Spotlight khi rê chuột */}
+      {/* Spotlight effect on hover */}
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
@@ -140,7 +155,7 @@ function InsightCard({ item }: { item: (typeof insights)[number] }) {
         }}
       />
 
-      {/* Nội dung Card */}
+      {/* Card Content */}
       <div className="relative flex flex-col h-full justify-between">
         <div>
           <div className="h-10 w-10 rounded-full bg-secondary/50 flex items-center justify-center mb-4 text-primary border border-white/5">
@@ -162,11 +177,11 @@ function InsightCard({ item }: { item: (typeof insights)[number] }) {
   );
 }
 
-// --- COMPONENT CHÍNH ---
+// --- MAIN COMPONENT ---
 const FaqBentoGrid = () => {
   return (
     <section id="faq" className="py-24 bg-background relative overflow-hidden">
-      {/* Background Decor nhẹ */}
+      {/* Light Background Decor */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 md:px-8">
@@ -181,8 +196,8 @@ const FaqBentoGrid = () => {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg">
-            Không chỉ là câu trả lời, đây là cách tôi vận hành, công nghệ tôi sử
-            dụng và cam kết của tôi đối với dự án của bạn.
+            More than just answers, this is how I operate, the technologies I
+            use, and my commitment to your projects.
           </p>
         </div>
 
