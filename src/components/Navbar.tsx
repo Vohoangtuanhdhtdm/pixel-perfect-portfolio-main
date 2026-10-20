@@ -28,7 +28,7 @@ const Navbar = () => {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-8">
-        <a href="#" className="font-display text-base font-bold tracking-tight">
+        <a href="/" className="font-display text-base font-bold tracking-tight">
           {profile.nameAscii}
           <span className="text-primary">.</span>
         </a>

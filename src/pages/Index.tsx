@@ -1,29 +1,28 @@
+import { MotionConfig } from "framer-motion";
 import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import MetricsBanner from "@/components/MetricsBanner";
-import ProjectsGrid from "@/components/ProjectsGrid";
-import StickyScrollSection from "@/components/StickyScrollSection";
-import TechMarquee from "@/components/TechMarquee";
+import Hero from "@/components/Hero";
+import WorkSection from "@/components/WorkSection";
+import ResearchSection from "@/components/ResearchSection";
+import SkillsSection from "@/components/SkillsSection";
+import ProcessSection from "@/components/ProcessSection";
 import FaqSection from "@/components/FaqSection";
-import FooterCta from "@/components/FooterCta";
-import AchievementsSection from "@/components/AchievementsSection";
+import ContactSection from "@/components/ContactSection";
 
-const Index = () => {
-  return (
+const Index = () => (
+  <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main>
-        <HeroSection />
-        <MetricsBanner />
-        <ProjectsGrid />
-        <StickyScrollSection />
-        <TechMarquee />
-        <AchievementsSection />
+        <Hero />
+        <WorkSection />
+        <ResearchSection />
+        <SkillsSection />
+        <ProcessSection />
         <FaqSection />
-        <FooterCta />
+        <ContactSection />
       </main>
     </div>
-  );
-};
+  </MotionConfig>
+);
 
 export default Index;
