@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { projects, type Project } from "@/data/projects";
 import ArchitectureDiagram from "./ArchitectureDiagram";
@@ -9,12 +9,14 @@ import SectionHeader from "./SectionHeader";
 // Bento placement on large screens: featured 2×2, then two stacked tiles, then a 1 + 2 row.
 const spans = ["lg:col-span-2 lg:row-span-2", "", "", "", "lg:col-span-2"];
 
-const Tile = ({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) => {
+type TileProps = { project: Project; index: number; onOpen: (tile: HTMLButtonElement) => void };
+
+const Tile = ({ project, index, onOpen }: TileProps) => {
   const featured = project.featured;
   return (
     <button
       type="button"
-      onClick={onOpen}
+      onClick={(e) => onOpen(e.currentTarget)}
       className="group flex h-full w-full flex-col rounded-lg border border-border bg-card p-6 text-left transition-all duration-300 hover:-translate-y-0.5 hover:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:p-8"
     >
       <div className="flex w-full items-start justify-between gap-4">
@@ -50,6 +52,15 @@ const Tile = ({ project, index, onOpen }: { project: Project; index: number; onO
 
 const WorkSection = () => {
   const [selected, setSelected] = useState<Project | null>(null);
+  const [open, setOpen] = useState(false);
+  // The dialog is opened from state (no DialogTrigger), so Radix can't restore focus by itself.
+  const lastTile = useRef<HTMLButtonElement | null>(null);
+
+  const openProject = (project: Project, tile: HTMLButtonElement) => {
+    lastTile.current = tile;
+    setSelected(project);
+    setOpen(true);
+  };
 
   return (
     <section id="work" className="scroll-mt-20 py-24 md:py-32">
@@ -58,12 +69,20 @@ const WorkSection = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, i) => (
             <Reveal key={project.id} delay={i * 0.05} className={`${spans[i] ?? ""} ${project.featured ? "md:col-span-2" : ""}`}>
-              <Tile project={project} index={i} onOpen={() => setSelected(project)} />
+              <Tile project={project} index={i} onOpen={(tile) => openProject(project, tile)} />
             </Reveal>
           ))}
         </div>
       </div>
-      <ProjectDialog project={selected} open={selected !== null} onOpenChange={(o) => !o && setSelected(null)} />
+      <ProjectDialog
+        project={selected}
+        open={open}
+        onOpenChange={setOpen}
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          lastTile.current?.focus();
+        }}
+      />
     </section>
   );
 };

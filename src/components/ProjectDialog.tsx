@@ -8,14 +8,15 @@ type ProjectDialogProps = {
   project: Project | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onCloseAutoFocus?: (event: Event) => void;
 };
 
-const ProjectDialog = ({ project, open, onOpenChange }: ProjectDialogProps) => {
+const ProjectDialog = ({ project, open, onOpenChange, onCloseAutoFocus }: ProjectDialogProps) => {
   const isMobile = useIsMobile();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto rounded-lg border-border bg-background p-6 sm:p-10">
+      <DialogContent onCloseAutoFocus={onCloseAutoFocus} className="max-h-[90vh] max-w-3xl overflow-y-auto rounded-lg border-border bg-background p-6 sm:p-10">
         {project && (
           <>
             <p className="eyebrow">

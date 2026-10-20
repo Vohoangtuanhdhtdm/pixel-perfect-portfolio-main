@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import WorkSection from "./WorkSection";
 import ArchitectureDiagram from "./ArchitectureDiagram";
 import { projects } from "@/data/projects";
@@ -34,5 +34,18 @@ describe("ArchitectureDiagram", () => {
     const { container } = render(<ArchitectureDiagram diagram={gogo.diagram!} title="GoGo" />);
     gogo.diagram!.nodes.forEach((n) => expect(screen.getByText(n.label)).toBeInTheDocument());
     expect(container.querySelectorAll("path[data-edge]")).toHaveLength(gogo.diagram!.edges.length);
+  });
+});
+
+describe("WorkSection keyboard focus", () => {
+  it("returns focus to the tile after the dialog closes with Esc", async () => {
+    render(<WorkSection />);
+    const tile = screen.getByRole("button", { name: /GoGo/ });
+    tile.focus();
+    fireEvent.click(tile);
+    const dialog = await screen.findByRole("dialog");
+    fireEvent.keyDown(dialog, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    await waitFor(() => expect(document.activeElement).toBe(tile));
   });
 });
