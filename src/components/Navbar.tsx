@@ -1,123 +1,86 @@
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { profile } from "@/data/profile";
 
 const navLinks = [
-  { label: "Projects", href: "#projects" },
-  { label: "Process", href: "#process" },
-  { label: "Tech", href: "#tech" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Work", href: "#work" },
+  { label: "Research", href: "#research" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
 ];
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm"
-          : "bg-transparent"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled ? "border-b border-border bg-background/80 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 h-14 md:h-16 flex items-center justify-between">
-        <motion.a
-          href="#"
-          whileHover={{ scale: 1.05 }}
-          className="font-display text-lg md:text-xl font-bold tracking-tight"
-        >
-          <span className="text-gradient">HoangTuan</span>
-          <span className="text-foreground">.dev</span>
-        </motion.a>
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-8">
+        <a href="#" className="font-display text-base font-bold tracking-tight">
+          {profile.nameAscii}
+          <span className="text-primary">.</span>
+        </a>
 
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-          {navLinks.map((link, i) => (
-            <motion.a
-              key={link.label}
-              href={link.href}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 * i }}
-              whileHover={{ color: "hsl(221, 83%, 53%)" }}
-              className="text-sm text-muted-foreground transition-colors"
-            >
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+          {navLinks.map((link) => (
+            <a key={link.href} href={link.href} className="link-underline text-sm text-muted-foreground hover:text-foreground">
               {link.label}
-            </motion.a>
+            </a>
           ))}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.5 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <a
+            href={profile.cvUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-primary"
           >
-            <Button size="sm" className="font-semibold">
-              Contact Me
-            </Button>
-          </motion.div>
+            CV
+          </a>
         </nav>
 
-        <motion.button
-          onClick={() => setIsOpen(!isOpen)}
-          whileTap={{ scale: 0.9 }}
-          className="md:hidden text-foreground p-1"
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X size={22} /> : <Menu size={22} />}
-        </motion.button>
-      </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-background border-b border-border px-4 pb-4 overflow-hidden"
-          >
-            <div className="space-y-3 pt-3">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.label}
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <button className="-mr-2 p-2 md:hidden" aria-label="Open menu">
+              <Menu className="h-5 w-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-72 bg-background">
+            <SheetTitle className="eyebrow">Menu</SheetTitle>
+            <nav className="mt-8 flex flex-col gap-1" aria-label="Mobile">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
                   href={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.05 * i }}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+                  onClick={() => setOpen(false)}
+                  className="py-2 font-display text-3xl font-bold tracking-tight hover:text-primary"
                 >
                   {link.label}
-                </motion.a>
+                </a>
               ))}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.25 }}
-                className="pt-2"
+              <a
+                href={profile.cvUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-foreground text-sm font-medium text-background"
               >
-                <Button size="sm" className="w-full font-semibold">
-                  Contact Me
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+                Download CV
+              </a>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </header>
   );
 };
 
