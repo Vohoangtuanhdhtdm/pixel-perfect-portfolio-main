@@ -22,3 +22,12 @@ describe("Reveal with reduced motion", () => {
     expect(screen.getByText("hello")).not.toHaveStyle({ opacity: "0" });
   });
 });
+
+import CountUp from "./CountUp";
+
+describe("CountUp with reduced motion", () => {
+  it("shows the final value immediately", () => {
+    render(<CountUp value="8.6" />);
+    expect(screen.getByTestId("countup")).toHaveTextContent("8.6");
+  });
+});

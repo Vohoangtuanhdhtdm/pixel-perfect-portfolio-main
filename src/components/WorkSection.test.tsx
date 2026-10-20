@@ -49,3 +49,26 @@ describe("WorkSection keyboard focus", () => {
     await waitFor(() => expect(document.activeElement).toBe(tile));
   });
 });
+
+describe("Work tiles", () => {
+  it("show the role and one chip per stack item", () => {
+    render(<WorkSection />);
+    const kgs = projects[0];
+    const tile = screen.getByRole("button", { name: /KGS/ }).closest("article")!;
+    expect(within(tile).getByText(kgs.role)).toBeInTheDocument();
+    expect(within(tile).getAllByRole("listitem")).toHaveLength(kgs.stack.length);
+  });
+});
+
+describe("ArchitectureDiagram on phones", () => {
+  it("keeps labels legible by never scaling below 75% of natural width", () => {
+    const fraud = projects.find((p) => p.id === "fraud")!;
+    const { container } = render(
+      <ArchitectureDiagram diagram={fraud.diagram!} title="Fraud" orientation="vertical" />,
+    );
+    const svg = container.querySelector("svg")!;
+    const naturalWidth = Number(svg.getAttribute("viewBox")!.split(" ")[2]);
+    expect(naturalWidth).toBeLessThanOrEqual(460);
+    expect(parseFloat(svg.style.minWidth)).toBeGreaterThanOrEqual(naturalWidth * 0.75);
+  });
+});

@@ -16,7 +16,7 @@ const ProjectDialog = ({ project, open, onOpenChange, onCloseAutoFocus }: Projec
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent onCloseAutoFocus={onCloseAutoFocus} className="max-h-[90vh] max-w-3xl overflow-y-auto rounded-lg border-border bg-background p-6 sm:p-10">
+      <DialogContent onCloseAutoFocus={onCloseAutoFocus} className="max-h-[90vh] max-w-3xl overflow-y-auto rounded-lg border-border bg-background p-5 sm:p-10">
         {project && (
           <>
             <p className="eyebrow">
@@ -30,7 +30,7 @@ const ProjectDialog = ({ project, open, onOpenChange, onCloseAutoFocus }: Projec
             </DialogDescription>
 
             {project.diagram && (
-              <div className="mt-8 rounded-lg border border-border bg-card p-4 md:p-6">
+              <div className="mt-8 overflow-x-auto rounded-lg border border-border bg-card p-3 md:p-6">
                 <p className="eyebrow mb-4">Architecture</p>
                 <ArchitectureDiagram
                   diagram={project.diagram}
