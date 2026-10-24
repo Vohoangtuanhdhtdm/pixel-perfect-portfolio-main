@@ -11,11 +11,25 @@ const spans = ["lg:col-span-2 lg:row-span-2", "", "", "", "lg:col-span-2"];
 
 type TileProps = { project: Project; index: number; onOpen: (tile: HTMLButtonElement) => void };
 
-// Cursor-following spotlight: CSS variables updated on mouse move, no React re-render.
+// Cursor-following specular highlight + subtle 3D tilt, driven by CSS variables (no React re-render).
+const MAX_TILT_DEG = 4;
+
 const trackPointer = (e: MouseEvent<HTMLElement>) => {
-  const rect = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
-  e.currentTarget.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  el.style.setProperty("--spot-x", `${x}px`);
+  el.style.setProperty("--spot-y", `${y}px`);
+  // Larger tiles tilt less so the featured card doesn't swing too far.
+  const tilt = MAX_TILT_DEG * Math.min(1, 360 / rect.width);
+  el.style.setProperty("--ry", `${((x / rect.width - 0.5) * 2 * tilt).toFixed(2)}deg`);
+  el.style.setProperty("--rx", `${(-(y / rect.height - 0.5) * 2 * tilt).toFixed(2)}deg`);
+};
+
+const resetPointer = (e: MouseEvent<HTMLElement>) => {
+  e.currentTarget.style.setProperty("--rx", "0deg");
+  e.currentTarget.style.setProperty("--ry", "0deg");
 };
 
 const Tile = ({ project, index, onOpen }: TileProps) => {
@@ -23,21 +37,25 @@ const Tile = ({ project, index, onOpen }: TileProps) => {
   return (
     <article
       onMouseMove={trackPointer}
-      className="group relative flex h-full w-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 transition-[border-color,transform,box-shadow] duration-300 focus-within:ring-2 focus-within:ring-ring hover:-translate-y-1 hover:border-foreground/60 hover:shadow-[0_18px_40px_-24px_hsl(var(--foreground)/0.35)] md:p-8"
+      onMouseLeave={resetPointer}
+      className="glass group relative flex h-full w-full flex-col overflow-hidden rounded-[32px] p-6 transition-[transform,box-shadow] duration-300 ease-out focus-within:ring-2 focus-within:ring-primary/60 hover:shadow-[0_30px_60px_-24px_rgb(30_50_90/0.35)] motion-safe:[transform:perspective(1000px)_rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] md:p-8"
     >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background:
-            "radial-gradient(420px circle at var(--spot-x, 50%) var(--spot-y, 50%), hsl(var(--primary) / 0.07), transparent 70%)",
+            "radial-gradient(380px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgb(255 255 255 / 0.75), transparent 65%)",
         }}
       />
       <div className="relative flex w-full items-start justify-between gap-4">
-        <span className="eyebrow">
-          <span className="text-primary">{String(index + 1).padStart(2, "0")}</span> · {project.category}
+        <span className="glass-inset inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-semibold text-foreground/75">
+          <span className="text-primary">{String(index + 1).padStart(2, "0")}</span>
+          {project.category}
         </span>
-        <ArrowUpRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+        <span className="glass-inset grid h-9 w-9 shrink-0 place-items-center rounded-full transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
       </div>
 
       <h3
@@ -61,21 +79,20 @@ const Tile = ({ project, index, onOpen }: TileProps) => {
       </p>
 
       {featured && project.diagram && (
-        <div className="relative mt-8 hidden w-full rounded-md border border-border bg-background p-4 md:block">
-          <ArchitectureDiagram diagram={project.diagram} title={project.title} decorative />
+        <div className="relative my-auto hidden w-full pt-8 md:block">
+          <div className="glass-inset rounded-[22px] p-4">
+            <ArchitectureDiagram diagram={project.diagram} title={project.title} decorative />
+          </div>
         </div>
       )}
 
       <div className="relative mt-auto pt-8">
-        <p className="eyebrow">
-          Role · <span className="text-foreground">{project.role}</span>
+        <p className="text-[13px] text-muted-foreground">
+          Role · <span className="font-semibold text-foreground">{project.role}</span>
         </p>
         <ul className="mt-3 flex flex-wrap gap-1.5">
           {project.stack.map((item) => (
-            <li
-              key={item}
-              className="rounded-full border border-border bg-background px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground"
-            >
+            <li key={item} className="glass-inset rounded-full px-2.5 py-1 text-[12px] font-medium text-foreground/70">
               {item}
             </li>
           ))}
@@ -98,10 +115,10 @@ const WorkSection = () => {
   };
 
   return (
-    <section id="work" className="scroll-mt-20 py-24 md:py-32">
+    <section id="work" className="scroll-mt-24 py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <SectionHeader number="01" kicker="Selected work" title="Systems I've designed and shipped." />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {projects.map((project, i) => (
             <Reveal
               key={project.id}

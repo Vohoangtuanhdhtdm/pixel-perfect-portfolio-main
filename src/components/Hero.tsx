@@ -25,10 +25,13 @@ const Hero = () => {
   return (
     <section ref={sectionRef} className="relative pt-28 md:pt-36">
       <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <motion.p {...fadeUp(0)} className="eyebrow flex items-center gap-2">
+        <motion.p
+          {...fadeUp(0)}
+          className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-medium text-foreground/80"
+        >
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-primary/40" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#34C759]/50 motion-reduce:animate-none" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#34C759]" />
           </span>
           {profile.availability} · {profile.location}
         </motion.p>
@@ -45,19 +48,11 @@ const Hero = () => {
               {profile.tagline}
             </motion.p>
             <motion.div {...fadeUp(0.55)} className="mt-10 flex flex-wrap gap-3">
-              <a
-                href="#work"
-                className="group inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-medium text-background transition-colors hover:bg-primary"
-              >
+              <a href="#work" className="btn-primary group">
                 View work
                 <ArrowDownRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
               </a>
-              <a
-                href={profile.cvUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex h-12 items-center gap-2 rounded-full border border-foreground/15 bg-card px-6 text-sm font-medium transition-colors hover:border-foreground"
-              >
+              <a href={profile.cvUrl} target="_blank" rel="noreferrer" className="btn-glass group">
                 View CV
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
@@ -66,13 +61,13 @@ const Hero = () => {
 
           <motion.figure
             style={{ y: portraitY }}
-            className="order-first max-w-[220px] lg:order-none lg:col-span-4 lg:max-w-none lg:justify-self-end"
+            className="glass order-first w-[250px] rounded-[32px] p-2.5 sm:w-[270px] lg:order-none lg:col-span-4 lg:w-[320px] lg:justify-self-end"
           >
             <motion.div
               initial={reduceMotion ? false : { clipPath: "inset(100% 0% 0% 0%)" }}
               animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
               transition={{ duration: 1.1, delay: 0.2, ease }}
-              className="aspect-[4/5] w-full overflow-hidden rounded-lg bg-muted lg:w-[300px]"
+              className="aspect-[4/5] w-full overflow-hidden rounded-[24px] bg-muted"
             >
               <motion.img
                 src={profile.avatar}
@@ -83,24 +78,19 @@ const Hero = () => {
                 className="h-full w-full object-cover grayscale-[15%]"
               />
             </motion.div>
-            <motion.figcaption {...fadeUp(0.8)} className="eyebrow mt-3">
-              {profile.role}
+            <motion.figcaption {...fadeUp(0.8)} className="flex items-center justify-center gap-3 px-2 pb-1 pt-3 lg:justify-between">
+              <span className="hidden text-sm font-semibold lg:inline">{profile.nameAscii}</span>
+              <span className="whitespace-nowrap rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
+                {profile.role}
+              </span>
             </motion.figcaption>
           </motion.figure>
         </div>
 
-        <motion.dl
-          {...fadeUp(0.7)}
-          className="mt-16 grid grid-cols-2 border-t border-border md:mt-24 md:grid-cols-4"
-        >
+        <motion.dl {...fadeUp(0.7)} className="mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-4 md:gap-4">
           {profile.stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`flex flex-col-reverse py-6 md:py-8 ${i % 2 === 1 ? "border-l border-border pl-6" : ""} ${
-                i >= 2 ? "border-t border-border md:border-t-0" : ""
-              } ${i === 2 ? "md:border-l md:pl-6" : ""}`}
-            >
-              <dt className="eyebrow mt-2">{stat.label}</dt>
+            <div key={stat.label} className="glass flex flex-col-reverse rounded-[28px] p-5 md:p-6">
+              <dt className="mt-1 text-[13px] font-medium text-muted-foreground">{stat.label}</dt>
               <dd className="font-display text-4xl font-bold tracking-[-0.03em] md:text-5xl">
                 <CountUp value={stat.value} delay={0.8 + i * 0.1} />
               </dd>
