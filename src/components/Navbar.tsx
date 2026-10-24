@@ -36,18 +36,18 @@ const Navbar = () => {
   }, []);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "border-b border-border bg-background/80 backdrop-blur-md" : "border-b border-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-8">
-        <a href="/" className="font-display text-base font-bold tracking-tight">
+    <header className="fixed inset-x-0 top-3 z-50 px-3 md:top-4">
+      <div
+        className={`glass relative mx-auto flex h-14 max-w-4xl items-center justify-between overflow-hidden rounded-full pl-5 pr-2 transition-shadow duration-300 ${
+          scrolled ? "shadow-[0_18px_50px_-18px_rgb(30_50_90/0.35)]" : ""
+        }`}
+      >
+        <a href="/" className="font-display text-[15px] font-bold tracking-tight">
           {profile.nameAscii}
           <span className="text-primary">.</span>
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
           {navLinks.map((link) => {
             const isActive = active === link.href.slice(1);
             return (
@@ -55,38 +55,36 @@ const Navbar = () => {
                 key={link.href}
                 href={link.href}
                 aria-current={isActive ? "true" : undefined}
-                className={`relative py-1 text-sm transition-colors hover:text-foreground ${
-                  isActive ? "text-foreground" : "text-muted-foreground"
+                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {link.label}
                 {isActive && (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-x-0 -bottom-0.5 h-px bg-primary"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="glass-inset absolute inset-0 rounded-full bg-white/70"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
+                <span className="relative">{link.label}</span>
               </a>
             );
           })}
-          <a
-            href={profile.cvUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-9 items-center rounded-full bg-foreground px-4 text-sm font-medium text-background transition-colors hover:bg-primary"
-          >
+          <a href={profile.cvUrl} target="_blank" rel="noreferrer" className="btn-primary ml-2 h-10 px-5 text-sm">
             CV
           </a>
         </nav>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <button className="-mr-2 p-2 md:hidden" aria-label="Open menu">
+            <button
+              className="glass-inset grid h-10 w-10 place-items-center rounded-full md:hidden"
+              aria-label="Open menu"
+            >
               <Menu className="h-5 w-5" />
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 bg-background">
+          <SheetContent side="right" className="glass-strong w-72 border-l-0">
             <SheetTitle className="eyebrow">Menu</SheetTitle>
             <nav className="mt-8 flex flex-col gap-1" aria-label="Mobile">
               {navLinks.map((link) => (
@@ -94,30 +92,25 @@ const Navbar = () => {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="py-2 font-display text-3xl font-bold tracking-tight hover:text-primary"
+                  className="rounded-2xl px-3 py-2 font-display text-3xl font-bold tracking-tight transition-colors hover:bg-white/60 hover:text-primary"
                 >
                   {link.label}
                 </a>
               ))}
-              <a
-                href={profile.cvUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-6 inline-flex h-11 items-center justify-center rounded-full bg-foreground text-sm font-medium text-background"
-              >
+              <a href={profile.cvUrl} target="_blank" rel="noreferrer" className="btn-primary mt-6 justify-center">
                 View CV
               </a>
             </nav>
           </SheetContent>
         </Sheet>
-      </div>
 
-      <motion.div
-        data-testid="scroll-progress"
-        aria-hidden
-        style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-primary"
-      />
+        <motion.div
+          data-testid="scroll-progress"
+          aria-hidden
+          style={{ scaleX: progress }}
+          className="absolute inset-x-6 bottom-0 h-[2px] origin-left rounded-full bg-primary/70"
+        />
+      </div>
     </header>
   );
 };

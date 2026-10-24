@@ -1,4 +1,5 @@
 import { MotionConfig } from "framer-motion";
+import AuroraBackground from "@/components/AuroraBackground";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import WorkSection from "@/components/WorkSection";
@@ -10,7 +11,8 @@ import ContactSection from "@/components/ContactSection";
 
 const Index = () => (
   <MotionConfig reducedMotion="user">
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative min-h-screen text-foreground">
+      <AuroraBackground />
       <Navbar />
       <main>
         <Hero />

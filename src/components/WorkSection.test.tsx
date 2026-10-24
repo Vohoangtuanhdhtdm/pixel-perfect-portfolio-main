@@ -63,9 +63,7 @@ describe("Work tiles", () => {
 describe("ArchitectureDiagram on phones", () => {
   it("keeps labels legible by never scaling below 75% of natural width", () => {
     const fraud = projects.find((p) => p.id === "fraud")!;
-    const { container } = render(
-      <ArchitectureDiagram diagram={fraud.diagram!} title="Fraud" orientation="vertical" />,
-    );
+    const { container } = render(<ArchitectureDiagram diagram={fraud.diagram!} title="Fraud" orientation="vertical" />);
     const svg = container.querySelector("svg")!;
     const naturalWidth = Number(svg.getAttribute("viewBox")!.split(" ")[2]);
     expect(naturalWidth).toBeLessThanOrEqual(460);
